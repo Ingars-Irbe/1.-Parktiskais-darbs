@@ -138,28 +138,42 @@ while len(generetas_virsotnes) > 0:
     else:
         pasreizejais_speletajs = 1
     print("Pašreizējā virkne: ", pasreizeja_virsotne[1])
-    print(f"{pasreizejais_speletajs}. spēlētāja gājiens!")
+    if len(pasreizeja_virsotne[1]) != 1:
+        print(f"{pasreizejais_speletajs}. spēlētāja gājiens!")
 
-    # Liek spēlētajam izvēlēties pusi no kuras izņemt skaitli
+
     while True:
-        gajiena_tips = input("Ievadi '1', lai izņemto skaitli no kreisās puses, '2' no labās: ")
-        if gajiena_tips in ['1', '2']:
+        # kad virkne paliek viens iespējamais cipars - pieskiram to automatiski speletajam
+        if len(pasreizeja_virsotne[1]) == 1:
+            print(f"Cipars tika atņemts automātiski {pasreizejais_speletajs}.spēlētājam")
+            print("")
+            gajiena_tips = '1'
             break
         else:
-            print("Invalid input.")
+            # Liek spēlētajam izvēlēties pusi no kuras izņemt skaitli
+            gajiena_tips = input("Ievadi '1', lai izņemto skaitli no kreisās puses, '2' no labās: ")
+            print("")
+            if gajiena_tips in ['1', '2']:
+                break
+            else:
+                print("Invalid input.")
     # tiek pārbaudīts gājiens
     gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne)
     # kad visi gājieni no pašreiz apskatāmās virsotnes ir apskatīti, šo virsotni dzēš no ģenerēto virsotņu saraksta
     generetas_virsotnes.pop(0)
 
 # Pārbauda kuram spēlētājam ir vairāk punkti => tas arī uzvar.
+
 if pasreizeja_virsotne[2] > pasreizeja_virsotne[3]:
     print(f"1. spēlētājs uzvar ar {pasreizeja_virsotne[2]} punktiem!")
-else:
+elif pasreizeja_virsotne[2] < pasreizeja_virsotne[3]:
     print(f"2. spēlētājs uzvar ar {pasreizeja_virsotne[3]} punktiem!!")
+else:
+    print(f"Abiem spēlētājiem ir vienāds punktu skaits. Spēles rezultāts - neizšķirts")
 
 # Liel lietotājam izvēlēties vai tas vēlas redzēt spēles virsotņu un loku kopas
 while True:
+    print("")
     paradit_virsotnes = input("Vai vēlaties apskatīt spēles virsotnes un lokus? [Y/N]: ")
     if paradit_virsotnes in ['y', 'Y']:
         for x in sp.virsotnu_kopa:
@@ -168,6 +182,7 @@ while True:
         for x, y in sp.loku_kopa.items():
             #Tiek izvadīta spēles koka loku kopa
             print(x, y)
+        break
     if paradit_virsotnes in ['n', 'N']:
         break
     else:
